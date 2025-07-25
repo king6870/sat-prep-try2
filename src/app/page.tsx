@@ -60,7 +60,7 @@ export default function Home() {
                   <p className="text-sm text-gray-700 mt-1">Build your own practice tests</p>
                 </div>
               </div>
-              {session.user?.role === 'ADMIN' && (
+              {(session.user as any)?.role === 'ADMIN' && (
                 <div className="mt-6 p-4 bg-red-50 border border-red-300 rounded-lg">
                   <h4 className="font-semibold text-red-900 text-base">🔧 Admin Panel</h4>
                   <p className="text-sm text-red-800 mt-1">Manage questions, users, and content</p>

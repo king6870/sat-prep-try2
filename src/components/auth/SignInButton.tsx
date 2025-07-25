@@ -31,7 +31,7 @@ export default function SignInButton() {
           <span className="text-sm font-medium text-gray-900">
             Welcome, {session.user?.name || session.user?.email}
           </span>
-          {session.user?.role === 'ADMIN' && (
+          {(session.user as any)?.role === 'ADMIN' && (
             <span className="px-2 py-1 text-xs bg-red-100 text-red-900 rounded-full border border-red-300 font-semibold">
               Admin
             </span>
