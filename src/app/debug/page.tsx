@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function DebugPage() {
   const [dbStatus, setDbStatus] = useState<any>(null)
@@ -12,7 +13,7 @@ export default function DebugPage() {
       const response = await fetch('/api/create-tables')
       const data = await response.json()
       setDbStatus(data)
-    } catch (error) {
+    } catch {
       setDbStatus({
         success: false,
         error: 'Failed to connect to API'
@@ -107,18 +108,18 @@ export default function DebugPage() {
                 After creating tables, test the authentication:
               </p>
               <div className="space-x-4">
-                <a
+                <Link
                   href="/"
                   className="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
                   Go to Homepage
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/auth/signin"
                   className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
                   Test Sign In
-                </a>
+                </Link>
               </div>
             </div>
           </div>

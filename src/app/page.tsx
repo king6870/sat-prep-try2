@@ -48,7 +48,7 @@ export default function Home() {
                   ✅ Authentication is working perfectly!
                 </p>
                 <p className="text-green-700 text-sm mt-2">
-                  User ID: {session.user?.id || 'Loading...'}
+                  User ID: {(session.user as any)?.id || 'Loading...'}
                 </p>
                 <p className="text-green-700 text-sm">
                   Email: {session.user?.email}
