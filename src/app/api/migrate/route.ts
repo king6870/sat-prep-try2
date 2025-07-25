@@ -18,21 +18,21 @@ export async function GET() {
     try {
       const userCount = await prisma.user.count()
       console.log(`✅ User table exists with ${userCount} records`)
-    } catch (error) {
+    } catch {
       console.log('ℹ️ User table may not exist yet, this is normal for first migration')
     }
     
     try {
       const accountCount = await prisma.account.count()
       console.log(`✅ Account table exists with ${accountCount} records`)
-    } catch (error) {
+    } catch {
       console.log('ℹ️ Account table may not exist yet, this is normal for first migration')
     }
     
     try {
       const sessionCount = await prisma.session.count()
       console.log(`✅ Session table exists with ${sessionCount} records`)
-    } catch (error) {
+    } catch {
       console.log('ℹ️ Session table may not exist yet, this is normal for first migration')
     }
     

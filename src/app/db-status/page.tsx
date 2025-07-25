@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function DatabaseStatus() {
   const [status, setStatus] = useState<any>(null)
@@ -12,7 +13,7 @@ export default function DatabaseStatus() {
       const response = await fetch('/api/migrate')
       const data = await response.json()
       setStatus(data)
-    } catch (error) {
+    } catch {
       setStatus({
         success: false,
         error: 'Failed to connect to migration API'
@@ -89,25 +90,25 @@ export default function DatabaseStatus() {
             </h3>
             <ol className="list-decimal list-inside text-sm text-blue-700 space-y-1">
               <li>Make sure your Prisma DATABASE_URL is set in Vercel environment variables</li>
-              <li>Click "Check Database & Run Migration" above</li>
+              <li>Click &quot;Check Database &amp; Run Migration&quot; above</li>
               <li>If successful, your database is ready for authentication</li>
               <li>Test Google OAuth sign-in on the main page</li>
             </ol>
           </div>
 
           <div className="mt-6 flex space-x-4">
-            <a
+            <Link
               href="/"
               className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               ← Back to Home
-            </a>
-            <a
+            </Link>
+            <Link
               href="/auth/signin"
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               Test Sign In →
-            </a>
+            </Link>
           </div>
         </div>
       </div>
