@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-    async signIn({ user, account, profile }) {
+    async signIn() {
       // You can add custom sign-in logic here
       return true
     },
