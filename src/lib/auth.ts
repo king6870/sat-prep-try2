@@ -18,6 +18,64 @@ export const authOptions = {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    },
+    pkceCodeVerifier: {
+      name: `next-auth.pkce.code_verifier`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 15 // 15 minutes
+      }
+    },
+    state: {
+      name: `next-auth.state`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 15 // 15 minutes
+      }
+    },
+    nonce: {
+      name: `next-auth.nonce`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
+  },
+  useSecureCookies: process.env.NODE_ENV === 'production',
   callbacks: {
     async session({ session, user }: any) {
       if (session?.user && user) {
@@ -35,10 +93,18 @@ export const authOptions = {
       // You can add custom sign-in logic here
       return true
     },
+    async redirect({ url, baseUrl }: any) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    },
   },
   events: {
     async signIn({ user }: any) {
       console.log(`User signed in: ${user.email}`)
     },
   },
+  debug: process.env.NODE_ENV === 'development',
 }
