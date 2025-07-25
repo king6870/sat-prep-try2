@@ -27,7 +27,7 @@ export default function DebugPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            🔧 Debug & Fix Authentication
+            🔧 Debug & Fix SAT Prep Authentication
           </h1>
           
           <div className="space-y-6">
@@ -37,7 +37,7 @@ export default function DebugPage() {
                 1. Database Tables Check
               </h2>
               <p className="text-gray-600 mb-4">
-                The error &quot;Account table does not exist&quot; means we need to create database tables.
+                The error &quot;Account table does not exist&quot; means we need to create database tables for the SAT prep platform.
               </p>
               <button
                 onClick={checkDatabase}
@@ -75,7 +75,7 @@ export default function DebugPage() {
                 2. Environment Variables Check
               </h2>
               <p className="text-gray-600 mb-4">
-                Make sure these are set in your Vercel project:
+                Make sure these are set in your Vercel project for the SAT prep platform:
               </p>
               <div className="bg-gray-100 p-4 rounded-lg font-mono text-sm">
                 <div>DATABASE_URL=your-prisma-connection-string</div>
@@ -92,7 +92,7 @@ export default function DebugPage() {
                 3. Google OAuth Setup
               </h2>
               <p className="text-gray-600 mb-4">
-                Make sure your Google Cloud Console has this redirect URI:
+                Make sure your Google Cloud Console has this redirect URI for the SAT prep platform:
               </p>
               <div className="bg-gray-100 p-4 rounded-lg font-mono text-sm">
                 https://sat-prep-website.vercel.app/api/auth/callback/google
@@ -102,23 +102,23 @@ export default function DebugPage() {
             {/* Test Authentication */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                4. Test Authentication
+                4. Test SAT Prep Authentication
               </h2>
               <p className="text-gray-600 mb-4">
-                After creating tables, test the authentication:
+                After creating tables, test the authentication for the SAT prep platform:
               </p>
               <div className="space-x-4">
                 <Link
                   href="/"
                   className="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
-                  Go to Homepage
+                  📚 Go to SAT Prep Homepage
                 </Link>
                 <Link
                   href="/auth/signin"
                   className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Test Sign In
+                  🔐 Test Sign In
                 </Link>
               </div>
             </div>

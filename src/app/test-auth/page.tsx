@@ -15,10 +15,10 @@ export default function TestAuth() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            🔧 Test Authentication
+            🔧 Test SAT Prep Authentication
           </h2>
           <p className="text-gray-600 mb-8">
-            This is a simple test page to debug Google OAuth
+            This is a simple test page to debug Google OAuth for the SAT prep platform
           </p>
           
           <div className="space-y-4">
@@ -26,11 +26,11 @@ export default function TestAuth() {
               onClick={handleSignIn}
               className="w-full px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-medium"
             >
-              🦆 Test Google Sign In
+              📚 Test Google Sign In for SAT Prep
             </button>
             
             <div className="text-sm text-gray-500">
-              <p>This should redirect to Google and back</p>
+              <p>This should redirect to Google and back to the SAT prep dashboard</p>
               <p>If you get a cookie error, check the logs</p>
             </div>
             
@@ -41,6 +41,7 @@ export default function TestAuth() {
                 <li>• URL: {typeof window !== 'undefined' ? window.location.origin : 'server'}</li>
                 <li>• Cookies: Configured for production HTTPS</li>
                 <li>• State cookie: Should persist during OAuth flow</li>
+                <li>• Purpose: SAT prep platform authentication</li>
               </ul>
             </div>
           </div>

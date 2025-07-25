@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,22 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// NextAuth.js required models
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -44,17 +39,11 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String    @default("USER") // USER or ADMIN
+  role          String    @default("USER")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  accounts Account[]
-  sessions Session[]
-  
-  // SAT Prep specific fields (for future use)
-  // practiceHistory PracticeSession[]
-  // savedQuestions  SavedQuestion[]
-  // testScores      TestScore[]
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model VerificationToken {
@@ -64,8 +53,3 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-// Future SAT Prep models will go here
-// model Question { ... }
-// model PracticeSession { ... }
-// model TestScore { ... }
