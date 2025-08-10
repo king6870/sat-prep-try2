@@ -9,7 +9,10 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "db:migrate": "node scripts/migrate-db.js",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "db:seed": "node scripts/seed.js",
+    "db:seed-questions": "node scripts/seed-questions.js",
+    "db:reset": "prisma db push --force-reset && npm run db:seed"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

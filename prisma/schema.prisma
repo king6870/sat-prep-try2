@@ -34,16 +34,19 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
-  role          String    @default("USER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  role          String        @default("USER")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   accounts      Account[]
   sessions      Session[]
+  testSessions  TestSession[]
+  studyPlans    StudyPlan[]
+  progress      Progress[]
 }
 
 model VerificationToken {
@@ -52,4 +55,84 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  question    String
+  choices     String   // JSON string of choices array
+  answer      String
+  explanation String
+  pointAmount Int      @map("point_amount")
+  category    String
+  difficulty  String   @default("medium")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([difficulty])
+}
+
+model TestSession {
+  id          String     @id @default(cuid())
+  userId      String
+  type        String     // "practice", "full_test", "timed"
+  category    String?    // specific category or null for mixed
+  startedAt   DateTime   @default(now())
+  completedAt DateTime?
+  score       Int?
+  totalQuestions Int
+  correctAnswers Int     @default(0)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses   Response[]
+
+  @@index([userId])
+  @@index([type])
+}
+
+model Response {
+  id            String      @id @default(cuid())
+  sessionId     String
+  questionId    String
+  userAnswer    String
+  isCorrect     Boolean
+  timeSpent     Int?        // seconds
+  createdAt     DateTime    @default(now())
+  session       TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([questionId])
+}
+
+model StudyPlan {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  targetScore Int?
+  categories  String   // JSON array of categories to focus on
+  schedule    String   // JSON object with study schedule
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Progress {
+  id              String   @id @default(cuid())
+  userId          String
+  category        String
+  totalQuestions  Int      @default(0)
+  correctAnswers  Int      @default(0)
+  averageScore    Float    @default(0)
+  lastPracticed   DateTime?
+  streakDays      Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@index([userId])
 }
