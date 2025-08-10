@@ -19,6 +19,7 @@ export const authOptions = {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
+  // CRITICAL: Fix cookie configuration for OAuth state cookie error
   cookies: {
     sessionToken: {
       name: `next-auth.session-token`,
@@ -63,7 +64,7 @@ export const authOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 15 // 15 minutes
+        maxAge: 60 * 15 // 15 minutes - CRITICAL for OAuth flow
       }
     },
     nonce: {
@@ -84,12 +85,17 @@ export const authOptions = {
       
       if (session?.user && user) {
         session.user.id = user.id
-        // Add role to session
-        const dbUser = await prisma.user.findUnique({
-          where: { id: user.id },
-          select: { role: true }
-        })
-        session.user.role = dbUser?.role || 'USER'
+        // Add role to session with error handling
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { role: true }
+          })
+          session.user.role = dbUser?.role || 'USER'
+        } catch (error) {
+          console.error('Error fetching user role:', error)
+          session.user.role = 'USER'
+        }
       }
       return session
     },
@@ -99,6 +105,9 @@ export const authOptions = {
       return true
     },
     async redirect({ url, baseUrl }: any) {
+      // Enhanced redirect handling for OAuth callback
+      console.log('OAuth Redirect callback:', { url, baseUrl })
+      
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`
       // Allows callback URLs on the same origin
@@ -108,7 +117,10 @@ export const authOptions = {
   },
   events: {
     async signIn({ user }: any) {
-      console.log(`User signed in: ${user.email}`)
+      console.log(`✅ User signed in successfully: ${user.email}`)
+    },
+    async signOut({ session }: any) {
+      console.log(`👋 User signed out: ${session?.user?.email}`)
     },
   },
   debug: process.env.NODE_ENV === 'development',
