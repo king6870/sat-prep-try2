@@ -4,12 +4,12 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
+// Force direct SQLite connection, explicitly disable Accelerate
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  log: ['query'],
-  // Ensure no Accelerate configuration
+  log: process.env.NODE_ENV === 'development' ? ['query'] : [],
   datasources: {
     db: {
-      url: process.env.DATABASE_URL
+      url: process.env.DATABASE_URL || 'file:./dev.db'
     }
   }
 })

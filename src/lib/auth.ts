@@ -1,6 +1,7 @@
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "./prisma"
+import { ensureDatabaseInitialized } from "./init-db"
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -78,6 +79,9 @@ export const authOptions = {
   useSecureCookies: process.env.NODE_ENV === 'production',
   callbacks: {
     async session({ session, user }: any) {
+      // Ensure database is initialized before any session operations
+      await ensureDatabaseInitialized()
+      
       if (session?.user && user) {
         session.user.id = user.id
         // Add role to session
@@ -90,7 +94,8 @@ export const authOptions = {
       return session
     },
     async signIn() {
-      // You can add custom sign-in logic here
+      // Ensure database is initialized before sign-in
+      await ensureDatabaseInitialized()
       return true
     },
     async redirect({ url, baseUrl }: any) {
